@@ -43,11 +43,11 @@ hide_cursor()
 while running:
     clear_canvas()
     map_ground.draw(resolution_width // 2, resolution_height // 2)
-    hero.clip_draw(0, frame * 24, 24, 24, x, 24)
+    hero.clip_draw(0, frame * 32, 16, 32, x, 60)
     update_canvas()
 
     handle_events()
-    frame = (frame + 1) % 8
+    frame = (frame + 1) % 2
     x += dir * 5
     delay(0.05)
 close_canvas()
