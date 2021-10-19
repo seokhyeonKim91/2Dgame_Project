@@ -12,6 +12,15 @@ class Player:
         self.frame = (self.frame + 1) % 2
         self.x += dir_x * 5
         self.y += dir_y * 5
+        #collison check
+        if player.x >= 330:
+            player.x = 329
+        elif player.x <= 50:
+            player.x = 51
+        elif player.y >= 215:
+            player.y = 214
+        elif player.y <= 55:
+            player.y = 54
 
     def draw(self):
         self.image.clip_draw(0 + dir_hero, self.frame * 32, 16, 32, self.x, self.y)
@@ -22,6 +31,7 @@ class Dungeon01:
         self.image = load_image('dungeon_1.png')
     def draw(self):
         self.image.draw(resolution_width // 2, resolution_height // 2)
+
 
 def handle_events():
     global running
@@ -37,20 +47,16 @@ def handle_events():
                 dir_x += 1
                 dir_hero = 0
                 dir_hero += 84
-
             elif event.key == SDLK_LEFT:
                 dir_x -= 1
                 dir_hero = 0
                 dir_hero += 28
-
             elif event.key == SDLK_UP:
                 dir_y += 1
                 dir_hero = 0
                 dir_hero += 56
-
             elif event.key == SDLK_DOWN:
                 dir_hero = 0
-                dir_hero_attack = 0
                 dir_y -= 1
             elif event.key == SDLK_ESCAPE:
                 running = False
