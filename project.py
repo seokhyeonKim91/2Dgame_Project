@@ -79,6 +79,8 @@ def handle_events():
             elif event.key == SDLK_DOWN:
                 dir_hero = 0
                 dir_y -= 1
+            elif event.key == SDLK_z:
+                pattack()
             elif event.key == SDLK_ESCAPE:
                 running = False
         elif event.type == SDL_KEYUP:
@@ -90,6 +92,9 @@ def handle_events():
                 dir_y -= 1
             elif event.key == SDLK_DOWN:
                 dir_y += 1
+            elif event.key == SDLK_z:
+                player.image = load_image('link_run1.png')
+
 
     pass
 
@@ -110,7 +115,9 @@ def tracking_events():
             elif player.y < monster1.b:
                 monster1.b -= 1
 
-
+def pattack():
+    player.image = load_image('link_attack.png')
+    player.image.clip_draw(0 + dir_hero, player.frame * 30, 30, 30, player.x, player.y)
 
 # initialization code
 open_canvas(resolution_width, resolution_height)
