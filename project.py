@@ -38,9 +38,23 @@ class Monster01:
         self.frame = 0
         self.image = load_image('monster_01.png')
 
+    def tracking_events(self, a, b):
+        if player.x >= a:
+            a += 1
+            if player.y >= b:
+                b += 1
+            elif player.y < b:
+                b -= 1
+        elif player.x < a:
+            a -= 1
+            if player.y >= b:
+                b += 1
+            elif player.y < b:
+                b -= 1
+
     def update(self):
         self.frame = (self.frame + 1) % 2
-        #tracking_events()
+        self.tracking_events(self.a, self.b)
         #collison check
         if self.a >= 330:
             self.a = 329
@@ -98,23 +112,6 @@ def handle_events():
 
     pass
 
-def tracking_events():
-    global mondir_x
-    global mondir_y
-    for event in events:
-        if player.x >= monster1.a:
-            monster1.a += 1
-            if player.y >= monster1.b:
-                monster1.b += 1
-            elif player.y < monster1.b:
-                monster1.b -= 1
-        elif player.x < monster1.a:
-            monster1.a -= 1
-            if player.y >= monster1.b:
-                monster1.b += 1
-            elif player.y < monster1.b:
-                monster1.b -= 1
-
 def pattack():
     player.image = load_image('link_attack.png')
     player.image.clip_draw(0 + dir_hero, player.frame * 30, 30, 30, player.x, player.y)
@@ -125,7 +122,7 @@ open_canvas(resolution_width, resolution_height)
 running = True
 player = Player()
 monster1 = Monster01()
-#monster_team01 = [Monster01() for i in range(4)]
+monster_team01 = [Monster01() for i in range(4)]
 dungeon01 = Dungeon01()
 dir_x = 0
 dir_y = 0
@@ -140,18 +137,17 @@ while running:
     clear_canvas()
 
     player.update()
-    monster1.update()
-    #for monster01 in monster_team01:
-    #    monster01.update()
+    #monster1.update()
+    for monster01 in monster_team01:
+        monster01.update()
 
     dungeon01.draw()
     player.draw()
-    monster1.draw()
-    #for monster01 in monster_team01:
-    #    monster01.draw()
+   #monster1.draw()
+    for monster01 in monster_team01:
+        monster01.draw()
 
     handle_events()
-    #tracking_events()
     update_canvas()
     delay(0.05)
 close_canvas()
