@@ -52,7 +52,7 @@ class Monster01:
             self.b = 54
 
     def draw(self):
-        self.image.clip_draw(0, self.frame * 32, 16, 32, self.a, self.b)
+        self.image.clip_draw(0, self.frame * 30, 30, 30, self.a, self.b)
 
 def handle_events():
     global running
@@ -67,15 +67,15 @@ def handle_events():
             if event.key == SDLK_RIGHT:
                 dir_x += 1
                 dir_hero = 0
-                dir_hero += 84
+                dir_hero += 90
             elif event.key == SDLK_LEFT:
                 dir_x -= 1
                 dir_hero = 0
-                dir_hero += 28
+                dir_hero += 30
             elif event.key == SDLK_UP:
                 dir_y += 1
                 dir_hero = 0
-                dir_hero += 56
+                dir_hero += 60
             elif event.key == SDLK_DOWN:
                 dir_hero = 0
                 dir_y -= 1
