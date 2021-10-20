@@ -6,7 +6,7 @@ class Player:
     def __init__(self):
         self.x, self.y = 192, 60
         self.frame = 0
-        self.image = load_image('link_run.png')
+        self.image = load_image('link_run1.png')
 
     def update(self):
         self.frame = (self.frame + 1) % 2
@@ -23,7 +23,7 @@ class Player:
             player.y = 54
 
     def draw(self):
-        self.image.clip_draw(0 + dir_hero, self.frame * 32, 16, 32, self.x, self.y)
+        self.image.clip_draw(0 + dir_hero, self.frame * 30, 30, 30, self.x, self.y)
 
 
 class Dungeon01:
@@ -32,6 +32,27 @@ class Dungeon01:
     def draw(self):
         self.image.draw(resolution_width // 2, resolution_height // 2)
 
+class Monster01:
+    def __init__(self):
+        self.a, self.b = random.randint(51, 329), random.randint(54, 214)
+        self.frame = 0
+        self.image = load_image('monster_01.png')
+
+    def update(self):
+        self.frame = (self.frame + 1) % 2
+        #tracking_events()
+        #collison check
+        if self.a >= 330:
+            self.a = 329
+        elif self.a <= 50:
+            self.a = 51
+        elif self.b >= 215:
+            self.b = 214
+        elif self.b <= 55:
+            self.b = 54
+
+    def draw(self):
+        self.image.clip_draw(0, self.frame * 32, 16, 32, self.a, self.b)
 
 def handle_events():
     global running
@@ -72,25 +93,58 @@ def handle_events():
 
     pass
 
+def tracking_events():
+    global mondir_x
+    global mondir_y
+    for event in events:
+        if player.x >= monster1.a:
+            monster1.a += 1
+            if player.y >= monster1.b:
+                monster1.b += 1
+            elif player.y < monster1.b:
+                monster1.b -= 1
+        elif player.x < monster1.a:
+            monster1.a -= 1
+            if player.y >= monster1.b:
+                monster1.b += 1
+            elif player.y < monster1.b:
+                monster1.b -= 1
+
+
+
 # initialization code
 open_canvas(resolution_width, resolution_height)
 
 running = True
 player = Player()
+monster1 = Monster01()
+#monster_team01 = [Monster01() for i in range(4)]
 dungeon01 = Dungeon01()
 dir_x = 0
 dir_y = 0
+mondir_x = 0
+mondir_y = 0
 dir_hero = 0
 hide_cursor()
 
 # game main loop code
 
 while running:
-    player.update()
     clear_canvas()
+
+    player.update()
+    monster1.update()
+    #for monster01 in monster_team01:
+    #    monster01.update()
+
     dungeon01.draw()
     player.draw()
+    monster1.draw()
+    #for monster01 in monster_team01:
+    #    monster01.draw()
+
     handle_events()
+    #tracking_events()
     update_canvas()
     delay(0.05)
 close_canvas()
