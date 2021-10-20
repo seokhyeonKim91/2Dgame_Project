@@ -38,23 +38,9 @@ class Monster01:
         self.frame = 0
         self.image = load_image('monster_01.png')
 
-    def tracking_events(self, a, b):
-        if player.x >= a:
-            a += 1
-            if player.y >= b:
-                b += 1
-            elif player.y < b:
-                b -= 1
-        elif player.x < a:
-            a -= 1
-            if player.y >= b:
-                b += 1
-            elif player.y < b:
-                b -= 1
-
     def update(self):
         self.frame = (self.frame + 1) % 2
-        self.tracking_events(self.a, self.b)
+        tracking_events(self.a, self.b)
         #collison check
         if self.a >= 330:
             self.a = 329
@@ -116,12 +102,28 @@ def pattack():
     player.image = load_image('link_attack.png')
     player.image.clip_draw(0 + dir_hero, player.frame * 30, 30, 30, player.x, player.y)
 
+def tracking_events(a, b):
+    if player.x >= a:
+        a += 1
+        if player.y >= b:
+            b += 1
+        elif player.y < b:
+            b -= 1
+    elif player.x < a:
+        a -= 1
+        if player.y >= b:
+            b += 1
+        elif player.y < b:
+            b -= 1
+    return a, b
+
+
 # initialization code
 open_canvas(resolution_width, resolution_height)
 
 running = True
 player = Player()
-monster1 = Monster01()
+#monster1 = Monster01()
 monster_team01 = [Monster01() for i in range(4)]
 dungeon01 = Dungeon01()
 dir_x = 0
