@@ -40,7 +40,7 @@ class Monster01:
 
     def update(self):
         self.frame = (self.frame + 1) % 2
-        tracking_events(self.a, self.b)
+        tracking_events1()
         #collison check
         if self.a >= 330:
             self.a = 329
@@ -53,6 +53,51 @@ class Monster01:
 
     def draw(self):
         self.image.clip_draw(0, self.frame * 30, 30, 30, self.a, self.b)
+
+class Monster02:
+    def __init__(self):
+        self.a, self.b = random.randint(51, 329), random.randint(54, 214)
+        self.frame = 0
+        self.image = load_image('monster_02.png')
+
+    def update(self):
+        self.frame = (self.frame + 1) % 2
+        tracking_events2()
+        #collison check
+        if self.a >= 330:
+            self.a = 329
+        elif self.a <= 50:
+            self.a = 51
+        elif self.b >= 215:
+            self.b = 214
+        elif self.b <= 55:
+            self.b = 54
+
+    def draw(self):
+        self.image.clip_draw(0, self.frame * 30, 30, 30, self.a, self.b)
+
+class Ranger_Monster:
+    def __init__(self):
+        self.a, self.b = random.randint(51, 329), random.randint(54, 214)
+        self.frame = 0
+        self.image = load_image('monster_03.png')
+
+    def update(self):
+        self.frame = (self.frame + 1) % 2
+        #traking_rmon_effect()
+        #collison check
+        if self.a >= 330:
+            self.a = 329
+        elif self.a <= 50:
+            self.a = 51
+        elif self.b >= 215:
+            self.b = 214
+        elif self.b <= 55:
+            self.b = 54
+
+    def draw(self):
+        self.image.clip_draw(0, self.frame * 30, 30, 30, self.a, self.b)
+
 
 def handle_events():
     global running
@@ -102,35 +147,68 @@ def pattack():
     player.image = load_image('link_attack.png')
     player.image.clip_draw(0 + dir_hero, player.frame * 30, 30, 30, player.x, player.y)
 
-def tracking_events(a, b):
-    if player.x >= a:
-        a += 1
-        if player.y >= b:
-            b += 1
-        elif player.y < b:
-            b -= 1
-    elif player.x < a:
-        a -= 1
-        if player.y >= b:
-            b += 1
-        elif player.y < b:
-            b -= 1
-    return a, b
+def tracking_events1():
+    if player.x >= monster1.a:
+        monster1.a += 3
+        if player.y >= monster1.b:
+            monster1.b += 3
+        elif player.y < monster1.b:
+            monster1.b -= 3
+    elif player.x < monster1.a:
+        monster1.a -= 3
+        if player.y >= monster1.b:
+            monster1.b += 3
+        elif player.y < monster1.b:
+            monster1.b -= 3
 
+def tracking_events2():
+    if player.x >= monster2.a:
+        monster2.a += 1
+        if player.y >= monster2.b:
+            monster2.b += 1
+        elif player.y < monster2.b:
+            monster2.b -= 1
+    elif player.x < monster2.a:
+        monster2.a -= 1
+        if player.y >= monster2.b:
+            monster2.b += 1
+        elif player.y < monster2.b:
+            monster2.b -= 1
+
+def traking_rmon_effect():
+    ran_effect = load_image('effect.png')
+    ran_effect.image.clip_draw(0 + dir_hero, ranger_monster.frame * 30, 30, 30, ranger_monster.a, ranger_monster.b)
+    if player.x > ranger_monster.a:
+        ranger_monster.a += 5
+        if player.y >= ranger_monster.b:
+            ranger_monster.b += 5
+        elif player.y < ranger_monster.b:
+            ranger_monster.b -= 5
+    elif player.x < ranger_monster.a:
+        ranger_monster.a -= 5
+        if player.y >= ranger_monster.b:
+            ranger_monster.b += 5
+        elif player.y < ranger_monster.b:
+            ranger_monster.b -= 5
+    #elif player.x == ranger_monster.a and player.y == ranger_monster.b:
+        #ran_effect = False
 
 # initialization code
 open_canvas(resolution_width, resolution_height)
 
 running = True
 player = Player()
-#monster1 = Monster01()
-monster_team01 = [Monster01() for i in range(4)]
+monster1 = Monster01()
+monster2 = Monster02()
+ranger_monster = Ranger_Monster()
 dungeon01 = Dungeon01()
+
 dir_x = 0
 dir_y = 0
 mondir_x = 0
 mondir_y = 0
 dir_hero = 0
+
 hide_cursor()
 
 # game main loop code
@@ -139,15 +217,15 @@ while running:
     clear_canvas()
 
     player.update()
-    #monster1.update()
-    for monster01 in monster_team01:
-        monster01.update()
+    monster1.update()
+    monster2.update()
+    ranger_monster.update()
 
     dungeon01.draw()
     player.draw()
-   #monster1.draw()
-    for monster01 in monster_team01:
-        monster01.draw()
+    monster1.draw()
+    monster2.draw()
+    ranger_monster.draw()
 
     handle_events()
     update_canvas()
