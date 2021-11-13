@@ -93,12 +93,12 @@ def run(start_state):
     start_state.enter()
 
     global frame_time
-    # fill here
+
     while (running):
         stack[-1].handle_events()
         stack[-1].update()
         stack[-1].draw()
-        # fill here
+        
 
     # repeatedly delete the top of the stack
     while (len(stack) > 0):
