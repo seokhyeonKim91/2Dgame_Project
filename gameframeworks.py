@@ -98,7 +98,7 @@ def run(start_state):
         stack[-1].handle_events()
         stack[-1].update()
         stack[-1].draw()
-        
+
 
     # repeatedly delete the top of the stack
     while (len(stack) > 0):
