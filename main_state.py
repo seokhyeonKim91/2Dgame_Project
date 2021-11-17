@@ -8,7 +8,7 @@ import game_world
 
 from player import Player
 from map_01 import Map_01
-
+from monster_01 import Monster_01
 
 name = "MainState"
 
@@ -18,8 +18,11 @@ def enter():
     global player
     player = Player()
     map = Map_01()
+    mon_team01 = [Monster_01() for i in  range(3)]
     game_world.add_object(map, 0)
     game_world.add_object(player, 1)
+    game_world.add_object(mon_team01, 1)
+
 
 
 def exit():

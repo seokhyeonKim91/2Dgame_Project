@@ -3,7 +3,7 @@ from pico2d import *
 import random
 
 
-class Player:
+class Monster_01:
 
     def __init__(self):
         self.x = random.randint(51, 329)
