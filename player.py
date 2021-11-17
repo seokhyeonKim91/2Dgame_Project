@@ -3,6 +3,21 @@ from pico2d import *
 
 import game_world
 
+# Player Run Speed
+# fill expressions correctly
+PIXEL_PER_METER = (10.0 / 0.3)
+RUN_SPEED_KMPH = 20.0
+RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
+RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
+RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
+
+# Player Action Speed
+# fill expressions correctly
+TIME_PER_ACTION = 0.5
+ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+FRAMES_PER_ACTION = 8
+
+
 RIGHT_DOWN, LEFT_DOWN, UP_DOWN, DOWN_DOWN, RIGHT_UP, LEFT_UP, UP_UP, DOWN_UP = range(8)
 key_event_table = {
 (SDL_KEYDOWN, SDLK_RIGHT): RIGHT_DOWN,
@@ -22,11 +37,11 @@ class IdleState:
     def enter(player, event):
         global dir_hero
         if event == RIGHT_DOWN:
-            player.velocity += 1
+            player.velocity += RUN_SPEED_PPS
             player.dir = 0
             player.dir += 90
         elif event == LEFT_DOWN:
-            player.velocity -= 1
+            player.velocity -= RUN_SPEED_PPS
             player.dir = 0
             player.dir += 30
         elif event == UP_DOWN:
@@ -37,9 +52,9 @@ class IdleState:
             player.velocity = player.velocity#나중에 찾아서 수정하기
             player.dir = 0
         elif event == RIGHT_UP:
-            player.velocity -= 1
+            player.velocity -= RUN_SPEED_PPS
         elif event == LEFT_UP:
-            player.velocity += 1
+            player.velocity += RUN_SPEED_PPS
         elif event == UP_UP:
             player.velocity = player.velocity#나중에 찾아서 수정하기
         elif event == DOWN_UP:
@@ -52,7 +67,9 @@ class IdleState:
         pass
 
     def do(player):
-        player.frame = (player.frame + 1) % 2
+        player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 2
+        player.x += player.velocity * game_framework.frame_time
+        player.x = clamp(25, player.x, 1600 - 25)
 
     def draw(player):
         if player.dir == 1:
