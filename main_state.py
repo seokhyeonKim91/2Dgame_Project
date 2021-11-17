@@ -18,10 +18,10 @@ def enter():
     global player
     player = Player()
     map = Map_01()
-    mon_team01 = [Monster_01() for i in  range(3)]
+    #mon_01 = Monster_01()
     game_world.add_object(map, 0)
     game_world.add_object(player, 1)
-    game_world.add_object(mon_team01, 1)
+    #game_world.add_object(mon_01, 1)
 
 
 

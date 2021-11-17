@@ -1,6 +1,5 @@
 import game_framework
 from pico2d import *
-
 import game_world
 import ctypes
 
@@ -82,7 +81,7 @@ class IdleState:
             player.x += player.velocity * game_framework.frame_time * 100
         else:
             player.y += player.velocity * game_framework.frame_time * 100
-        print("player X location : %f" % player.x)
+
 
 
     def draw(player):
@@ -125,7 +124,6 @@ class Player:
 
 
     def update(self):
-        # 스테이트는 아이들밖에 없으므로 우선 생략
         self.cur_state.do(self)
         if len(self.event_que) > 0:
             event = self.event_que.pop()
@@ -140,8 +138,8 @@ class Player:
             self.x = 61
         elif self.y >= 215:
             self.y = 214
-        elif self.y <= 55:
-            self.y = 54
+        elif self.y <= 54:
+            self.y = 55
 
 
 
