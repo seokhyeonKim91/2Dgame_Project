@@ -72,8 +72,8 @@ class IdleState:
         player.x = clamp(25, player.x, 1600 - 25)
 
     def draw(player):
-        if player.dir == 1:
-            player.image.clip_draw(0 + player.dir, player.frame * 30, 30, 30, player.x, player.y)
+        #if player.dir == 1:
+        player.image.clip_draw(0 + player.dir, player.frame * 30, 30, 30, player.x, player.y)
 
 
 
