@@ -74,7 +74,6 @@ class IdleState:
         pass
 
     def do(player):
-        #player.frame = (player.frame + (FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) ) % 2
         player.frameTime += 1
         if(player.frameTime == player.frameTimeMax):
             player.frame = (player.frame +1) % 2
@@ -84,7 +83,7 @@ class IdleState:
         else:
             player.y += player.velocity * game_framework.frame_time * 100
         print("player X location : %f" % player.x)
-        #player.x = clamp(25, player.x, 1600 - 25)
+
 
     def draw(player):
         #if player.dir == 1:
@@ -133,6 +132,16 @@ class Player:
             self.cur_state.exit(self, event)
             #self.cur_state = next_state_table[self.cur_state][event]
             self.cur_state.enter(self, event)
+
+        # collison check
+        if self.x >= 330:
+            self.x = 329
+        elif self.x <= 60:
+            self.x = 61
+        elif self.y >= 215:
+            self.y = 214
+        elif self.y <= 55:
+            self.y = 54
 
 
 

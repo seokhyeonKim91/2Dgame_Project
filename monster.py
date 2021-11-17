@@ -1,14 +1,15 @@
 import game_framework
 from pico2d import *
+import random
 
 
 class Player:
 
     def __init__(self):
-        self.x = 192
-        self.y = 60
+        self.x = random.randint(51, 329)
+        self.y = random.randint(54, 214)
 
-        self.image = load_image('link_run1.png')
+        self.image = load_image('monster_01.png')
         self.dir = 0
         self.velocity = 0
         self.horizon = True
@@ -43,7 +44,3 @@ class Player:
 
 
 
-    def handle_event(self, event):
-        if (event.type, event.key) in key_event_table:
-            key_event = key_event_table[(event.type, event.key)]
-            self.add_event(key_event)
