@@ -13,10 +13,7 @@ TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 8
 
-dir_hero = 0
-
 class IdleState:
-
     def do(monster01):
         monster01.frameTime += 1
         if(monster01.frameTime == monster01.frameTimeMax):
@@ -34,7 +31,6 @@ class IdleState:
 
 
 class Monster_01:
-
     def __init__(self):
         self.x = random.randint(61, 329)
         self.y = random.randint(54, 214)
@@ -66,10 +62,8 @@ class Monster_01:
             self.cur_state.enter(self, event)
 
 
-
     def draw(self):
         self.cur_state.draw(self)
-        debug_print('Velocity :' + str(self.velocity) + '  Dir:' + str(self.dir))
 
 
 
