@@ -2,11 +2,12 @@ import game_framework
 from pico2d import *
 
 import game_world
+import ctypes
 
 # Player Run Speed
 # fill expressions correctly
-PIXEL_PER_METER = (10.0 / 0.3)
-RUN_SPEED_KMPH = 20.0
+PIXEL_PER_METER = (1.0 / 0.3)
+RUN_SPEED_KMPH = 2.0
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
@@ -37,43 +38,57 @@ class IdleState:
     def enter(player, event):
         global dir_hero
         if event == RIGHT_DOWN:
+            player.velocity = 0
             player.velocity += RUN_SPEED_PPS
             player.dir = 0
             player.dir += 90
+            player.horizon = True
         elif event == LEFT_DOWN:
+            player.velocity = 0
             player.velocity -= RUN_SPEED_PPS
             player.dir = 0
             player.dir += 30
+            player.horizon = True
         elif event == UP_DOWN:
-            player.velocity = player.velocity #나중에 찾아서 수정하기
+            player.velocity = 0
+            player.velocity += RUN_SPEED_PPS
             player.dir = 0
             player.dir += 60
+            player.horizon = False
         elif event == DOWN_DOWN:
-            player.velocity = player.velocity#나중에 찾아서 수정하기
-            player.dir = 0
-        elif event == RIGHT_UP:
+            player.velocity = 0
             player.velocity -= RUN_SPEED_PPS
+            player.dir = 0
+            player.horizon = False
+        elif event == RIGHT_UP:
+            player.velocity = 0
         elif event == LEFT_UP:
-            player.velocity += RUN_SPEED_PPS
+            player.velocity = 0
         elif event == UP_UP:
-            player.velocity = player.velocity#나중에 찾아서 수정하기
+            player.velocity = 0
         elif event == DOWN_UP:
-            player.velocity = player.velocity#나중에 찾아서 수정하기
-
-        print("player input Event : %s" % event)
+            player.velocity = 0
 
 
     def exit(player, event):
         pass
 
     def do(player):
-        player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 2
-        player.x += player.velocity * game_framework.frame_time
-        player.x = clamp(25, player.x, 1600 - 25)
+        #player.frame = (player.frame + (FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) ) % 2
+        player.frameTime += 1
+        if(player.frameTime == player.frameTimeMax):
+            player.frame = (player.frame +1) % 2
+            player.frameTime = 0
+        if(player.horizon):
+            player.x += player.velocity * game_framework.frame_time * 100
+        else:
+            player.y += player.velocity * game_framework.frame_time * 100
+        print("player X location : %f" % player.x)
+        #player.x = clamp(25, player.x, 1600 - 25)
 
     def draw(player):
         #if player.dir == 1:
-        player.image.clip_draw(0 + player.dir, player.frame * 30, 30, 30, player.x, player.y)
+        player.image.clip_draw(player.dir, player.frame * 30, 30, 30, player.x, player.y)
 
 
 
@@ -89,11 +104,16 @@ next_state_table = {
 class Player:
 
     def __init__(self):
-        self.x, self.y = 192, 60
+        self.x = 192
+        self.y = 60
+
         self.image = load_image('link_run1.png')
         self.dir = 0
         self.velocity = 0
+        self.horizon = True
         self.frame = 0
+        self.frameTime = 0
+        self.frameTimeMax = 2
         self.event_que = []
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
@@ -107,7 +127,7 @@ class Player:
 
     def update(self):
         # 스테이트는 아이들밖에 없으므로 우선 생략
-        #self.cur_state.do(self)
+        self.cur_state.do(self)
         if len(self.event_que) > 0:
             event = self.event_que.pop()
             self.cur_state.exit(self, event)
