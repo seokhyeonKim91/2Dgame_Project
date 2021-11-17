@@ -15,16 +15,18 @@ ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 8
 
 
-RIGHT_DOWN, LEFT_DOWN, UP_DOWN, DOWN_DOWN, RIGHT_UP, LEFT_UP, UP_UP, DOWN_UP = range(8)
+RIGHT_DOWN, LEFT_DOWN, UP_DOWN, DOWN_DOWN, RIGHT_UP, LEFT_UP, UP_UP, DOWN_UP, z_UP, z_DOWN = range(10)
 key_event_table = {
 (SDL_KEYDOWN, SDLK_RIGHT): RIGHT_DOWN,
 (SDL_KEYDOWN, SDLK_LEFT): LEFT_DOWN,
 (SDL_KEYDOWN, SDLK_UP): UP_DOWN,
 (SDL_KEYDOWN, SDLK_DOWN): DOWN_DOWN,
+(SDL_KEYDOWN, SDLK_z): z_DOWN,
 (SDL_KEYUP, SDLK_RIGHT): RIGHT_UP,
 (SDL_KEYUP, SDLK_LEFT): LEFT_UP,
 (SDL_KEYUP, SDLK_UP): UP_UP,
 (SDL_KEYUP, SDLK_DOWN): DOWN_UP,
+(SDL_KEYUP, SDLK_z): z_UP,
 }
 
 dir_hero = 0
@@ -46,24 +48,28 @@ class IdleState:
             player.dir += 30
             player.horizon = True
         elif event == UP_DOWN:
-            player.velocity = 0
-            player.velocity += RUN_SPEED_PPS
+            player.y_velocity = 0
+            player.y_velocity += RUN_SPEED_PPS
             player.dir = 0
             player.dir += 60
             player.horizon = False
         elif event == DOWN_DOWN:
-            player.velocity = 0
-            player.velocity -= RUN_SPEED_PPS
+            player.y_velocity = 0
+            player.y_velocity -= RUN_SPEED_PPS
             player.dir = 0
             player.horizon = False
+        elif event == z_DOWN:
+            pattack(player)
         elif event == RIGHT_UP:
             player.velocity = 0
         elif event == LEFT_UP:
             player.velocity = 0
         elif event == UP_UP:
-            player.velocity = 0
+            player.y_velocity = 0
         elif event == DOWN_UP:
-            player.velocity = 0
+            player.y_velocity = 0
+        elif event == z_UP:
+            player.image = load_image('link_run1.png')
 
 
     def exit(player, event):
@@ -74,10 +80,10 @@ class IdleState:
         if(player.frameTime == player.frameTimeMax):
             player.frame = (player.frame +1) % 2
             player.frameTime = 0
-        if(player.horizon):
-            player.x += player.velocity * game_framework.frame_time * 100
-        else:
-            player.y += player.velocity * game_framework.frame_time * 100
+        #if(player.horizon):
+        player.x += player.velocity * game_framework.frame_time * 100
+        #else:
+        player.y += player.y_velocity * game_framework.frame_time * 100
 
 
 
@@ -87,6 +93,10 @@ class IdleState:
 
 
 
+
+def pattack(player):
+    player.image = load_image('link_attack.png')
+    player.image.clip_draw(player.dir, player.frame * 30, 30, 30, player.x, player.y)
 
 
 next_state_table = {
@@ -105,6 +115,7 @@ class Player:
         self.image = load_image('link_run1.png')
         self.dir = 0
         self.velocity = 0
+        self.y_velocity = 0
         self.horizon = True
         self.frame = 0
         self.frameTime = 0

@@ -11,7 +11,7 @@ RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 8
-ENEMY_SPEED = 0.1
+ENEMY_SPEED = 0.15
 
 player_location = []
 
@@ -39,28 +39,28 @@ def tracking_events1(monster):
 
 class IdleState:
 
-    def enter(monster01, event):
+    def enter(monster02, event):
         print("monster Import")
 
-    def do(monster01):
-        monster01.frameTime += 1
-        if(monster01.frameTime == monster01.frameTimeMax):
-            monster01.frame = (monster01.frame +1) % 2
-            monster01.frameTime = 0
-        if(monster01.horizon):
-            monster01.x += monster01.velocity * game_framework.frame_time * 100
+    def do(monster02):
+        monster02.frameTime += 1
+        if(monster02.frameTime == monster02.frameTimeMax):
+            monster02.frame = (monster02.frame +1) % 2
+            monster02.frameTime = 0
+        if(monster02.horizon):
+            monster02.x += monster02.velocity * game_framework.frame_time * 100
         else:
-            monster01.y += monster01.velocity * game_framework.frame_time * 100
-    def draw(monster01):
-        monster01.image.clip_draw(monster01.dir, monster01.frame * 30, 30, 30, monster01.x, monster01.y)
+            monster02.y += monster02.velocity * game_framework.frame_time * 100
+    def draw(monster02):
+        monster02.image.clip_draw(monster02.dir, monster02.frame * 30, 30, 30, monster02.x, monster02.y)
 
 
-class Monster_01:
+class Monster_02:
     def __init__(self):
         self.x = random.randint(61, 329)
         self.y = random.randint(54, 214)
 
-        self.image = load_image('monster_01.png')
+        self.image = load_image('monster_02.png')
         self.dir = 0
         self.velocity = 0
         self.horizon = True
