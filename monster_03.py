@@ -18,22 +18,22 @@ ENEMY_SPEED = 0.2
 player_location = []
 
 
-def tracking_events1(monster):
+def tracking_events1(ball):
     global player_location
 
     if player_location.__len__() > 0:
-        if player_location[0] >= monster.x:
-            monster.x += ENEMY_SPEED
-            if player_location[1] >= monster.y:
-                monster.y += ENEMY_SPEED
-            elif player_location[1] < monster.y:
-                monster.y -= ENEMY_SPEED
-        elif player_location[0] < monster.x:
-            monster.x -= ENEMY_SPEED
-            if player_location[1] >= monster.y:
-                monster.y += ENEMY_SPEED
-            elif player_location[1] < monster.y:
-                monster.y -= ENEMY_SPEED
+        if player_location[0] >= ball.x:
+            ball.x += ENEMY_SPEED
+            if player_location[1] >= ball.y:
+                ball.y += ENEMY_SPEED
+            elif player_location[1] < ball.y:
+                ball.y -= ENEMY_SPEED
+        elif player_location[0] < ball.x:
+            ball.x -= ENEMY_SPEED
+            if player_location[1] >= ball.y:
+                ball.y += ENEMY_SPEED
+            elif player_location[1] < ball.y:
+                ball.y -= ENEMY_SPEED
     else:
         print("player_location is not has info")
 
@@ -42,22 +42,23 @@ def tracking_events1(monster):
 class IdleState:
 
     def enter(monster03, event):
+        monster03.fire_ball()
+        tracking_events1(Ball)
+
+    #def do(monster03):
+    #    monster03.frameTime += 1
+    #    if(monster03.frameTime == monster03.frameTimeMax):
+    #        monster03.frame = (monster03.frame +1) % 2
+    #        monster03.frameTime = 0
+    #    if(monster03.horizon):
+    #        monster03.x += monster03.velocity * game_framework.frame_time * 100
+    #    else:
+    #        monster03.y += monster03.velocity * game_framework.frame_time * 100
+    def draw(monster03):
+        monster03.image.draw(0, 0, 30, 30, monster03.x, monster03.y)
 
 
-    def do(monster03):
-        monster03.frameTime += 1
-        if(monster03.frameTime == monster03.frameTimeMax):
-            monster03.frame = (monster03.frame +1) % 2
-            monster03.frameTime = 0
-        if(monster03.horizon):
-            monster03.x += monster03.velocity * game_framework.frame_time * 100
-        else:
-            monster03.y += monster03.velocity * game_framework.frame_time * 100
-    def draw(monster02):
-        monster02.image.clip_draw(monster02.dir, monster02.frame * 30, 30, 30, monster02.x, monster02.y)
-
-
-class Monster_02:
+class Monster_03:
     def __init__(self):
         self.x = random.randint(61, 329)
         self.y = random.randint(54, 214)
@@ -88,7 +89,7 @@ class Monster_02:
 
     def update(self):
         self.cur_state.do(self)
-        tracking_events1(self)
+        #tracking_events1(self)
         if len(self.event_que) > 0:
             event = self.event_que.pop()
             self.cur_state.exit(self, event)
@@ -98,6 +99,7 @@ class Monster_02:
 
     def draw(self):
         self.cur_state.draw(self)
+
 
 
 
