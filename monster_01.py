@@ -80,7 +80,7 @@ class Monster_01:
         self.x = random.randint(144, 1132)
         self.y = random.randint(106, 659)
 
-        self.health = 5
+        self.health = 3
 
         self.image = load_image('monster_01.png')
         self.dir = 0
@@ -88,7 +88,7 @@ class Monster_01:
         self.horizon = True
         self.frame = 0
         self.frameTime = 0
-        self.frameTimeMax = 2
+        self.frameTimeMax = 80
         self.event_que = []
         self.cur_state = IdleState
         self.cur_state.enter(self, None)

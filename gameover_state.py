@@ -13,7 +13,7 @@ def enter():
 
 def exit():
     global image
-    delay(1)
+    delay(3)
     del (image)
 
 
@@ -22,7 +22,7 @@ def update():
     if (logo_time > 1.0):
         logo_time = 0
     game_framework.quit()
-    delay(0.1)
+    delay(0.5)
     logo_time += 0.01
 
 

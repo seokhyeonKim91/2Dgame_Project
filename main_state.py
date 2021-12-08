@@ -6,6 +6,7 @@ from pico2d import *
 import game_framework
 import game_world
 import gameover_state
+import victory_state
 
 from player import Player
 from map_01 import Map_01
@@ -20,6 +21,7 @@ monster_01 = None
 monster_02 = None
 monster_03 = None
 health = None
+monster_counter = 0
 
 player_location = []
 
@@ -74,6 +76,7 @@ def update():
     global monster_02
     global health
     global player_location
+    global monster_counter
 
     for game_object in game_world.all_objects():
         game_object.update()
@@ -91,6 +94,10 @@ def update():
                     # 플레이어의 상태가 AttackState 일 때 충돌한 적 넉백
                     if game_object.knockback(collide(player, game_object)[0] * -0.5, collide(player, game_object)[1] * -0.5) :
                         game_world.remove_object(game_object)
+                        monster_counter += 1
+                        if monster_counter == 3 :
+                            game_framework.change_state(victory_state)
+
                 else:
                     player.knockback(collide(player, game_object)[0] * 0.5, collide(player, game_object)[1] * 0.5)
                     if player.get_health() == 0:

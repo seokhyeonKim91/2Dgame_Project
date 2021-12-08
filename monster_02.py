@@ -46,6 +46,7 @@ class IdleState:
         monster02.frameTime += 1
         if(monster02.frameTime == monster02.frameTimeMax):
             monster02.frame = (monster02.frame +1) % 4
+            monster02.frameTime = 0
         if(monster02.horizon):
             monster02.x += monster02.velocity * game_framework.frame_time * 100
         else:
@@ -60,7 +61,7 @@ class Monster_02:
         self.x = random.randint(144, 1132)
         self.y = random.randint(106, 659)
 
-        self.health = 3
+        self.health = 2
 
         self.image = load_image('monster_02.png')
         self.dir = 0
@@ -68,7 +69,7 @@ class Monster_02:
         self.horizon = True
         self.frame = 0
         self.frameTime = 0
-        self.frameTimeMax = 2
+        self.frameTimeMax = 80
         self.event_que = []
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
@@ -90,7 +91,6 @@ class Monster_02:
         if len(self.event_que) > 0:
             event = self.event_que.pop()
             self.cur_state.exit(self, event)
-            #self.cur_state = next_state_table[self.cur_state][event]
             self.cur_state.enter(self, event)
 
 
