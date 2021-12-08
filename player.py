@@ -88,19 +88,15 @@ class IdleState:
         player.image.clip_draw(player.frame * 64, player.dir, 64, 64, player.x, player.y)
 
 
-bgm = None
+smash_sound = None
 
 class AttackState:
 
     def enter(player, event):
         global dir_hero
-        global bgm
-        player.bgm = load_music('slash.mp3')
-        player.bgm.set_volume(15)
 
         if event == z_DOWN:
             player.image = load_image('player_attack.png')
-            player.bgm.play(1)
         elif event == z_UP:
             player.image = load_image('player_idle.png')
         player.frame = 0
@@ -146,7 +142,7 @@ class Player:
         self.x = 638
         self.y = 131
 
-        self.health = 3
+        self.health = 5
 
         self.image = load_image('player_idle.png')
 
@@ -160,6 +156,10 @@ class Player:
         self.event_que = []
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
+
+        global smash_sound
+        self.smash_sound = load_music('slash.wav')
+        self.smash_sound.set_volume(15)
 
 
     def get_health(self):
@@ -225,3 +225,5 @@ class Player:
         else:
             return False
 
+    def Smash(self, game_object):
+        self.smash_sound.play()

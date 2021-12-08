@@ -100,6 +100,7 @@ def update():
             if collide(player, game_object) != [99999, 99999]:
                 # player.stop()
                 if(player.get_state() == 1):
+                    player.Smash(game_object)
                     # 플레이어의 상태가 AttackState 일 때 충돌한 적 넉백
                     if game_object.knockback(collide(player, game_object)[0] * -0.5, collide(player, game_object)[1] * -0.5) :
                         game_world.remove_object(game_object)
