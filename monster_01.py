@@ -94,6 +94,13 @@ class Monster_01:
 
     def draw(self):
         self.cur_state.draw(self)
+        draw_rectangle(*self.get_bb())
+
+    def get_bb(self):
+        return self.x - 20, self.y - 25, self.x + 20, self.y + 30
+        return 0, 0, 0, 0
+
+    #def stop(self):
 
 
 

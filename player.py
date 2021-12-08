@@ -154,6 +154,7 @@ class Player:
     def draw(self):
         self.cur_state.draw(self)
         debug_print('Velocity :' + str(self.velocity) + '  Dir:' + str(self.dir))
+        draw_rectangle(*self.get_bb())
 
 
 
@@ -161,4 +162,12 @@ class Player:
         if (event.type, event.key) in key_event_table:
             key_event = key_event_table[(event.type, event.key)]
             self.add_event(key_event)
+
+    def get_bb(self):
+        return self.x - 30, self.y - 35, self.x + 30, self.y + 35
+        return 0, 0, 0, 0
+
+    def stop(self):
+        self.velocity = 0
+        self.y_velocity = 0
 
