@@ -1,9 +1,13 @@
 import game_framework
+import player
 from pico2d import *
 
-class Heart:
+class Health:
     def __init__(self):
-        self.x = 100
-        self.y = 650
         self.image = load_image('heart.png')
-        self.image.draw_now(600,600)
+
+    def draw(self):
+        count = player.Player.health
+        for i in count:
+            self.image.draw_now(100 * i, 600)
+

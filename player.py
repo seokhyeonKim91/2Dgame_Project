@@ -215,8 +215,3 @@ class Player:
         else:
             return False
 
-class Health_gauge:
-    def __init__(self):
-        self.image = load_image('heart.png')
-        self.image.draw_now(600,600)
-

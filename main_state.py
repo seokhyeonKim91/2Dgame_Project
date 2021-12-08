@@ -10,8 +10,7 @@ from player import Player
 from map_01 import Map_01
 from monster_01 import Monster_01
 from monster_02 import Monster_02
-from monster_03 import Monster_03
-from heartgauge import Heart
+from heartgauge import Health
 
 name = "MainState"
 
@@ -19,7 +18,7 @@ player = None
 monster_01 = None
 monster_02 = None
 monster_03 = None
-Heart = None
+Hearth = None
 
 player_location = []
 
@@ -28,20 +27,20 @@ def enter():
     global monster_01
     global monster_01_01
     global monster_02
-    #global Heart
+    global Hearth
     player = Player()
     map = Map_01()
     monster_01 = Monster_01()
     monster_01_01 = Monster_01()
     monster_02 = Monster_02()
-    #monster_03 = Monster_03()
-    #Heart = Heart()
+    hearth = Hearth()
+
     game_world.add_object(map, 0)
     game_world.add_object(player, 1)
     game_world.add_object(monster_01, 1)
     game_world.add_object(monster_01_01, 1)
     game_world.add_object(monster_02, 1)
-    #game_world.add_object(monster_03, 1)
+    game_world.add_object(hearth, 1)
 
 
 
@@ -72,7 +71,7 @@ def update():
     global monster_01
     global monster_01_01
     global monster_02
-    #global Heart
+    global hearth
     global player_location
 
     for game_object in game_world.all_objects():
