@@ -88,12 +88,19 @@ class IdleState:
         player.image.clip_draw(player.frame * 64, player.dir, 64, 64, player.x, player.y)
 
 
+bgm = None
 
 class AttackState:
+
     def enter(player, event):
         global dir_hero
+        global bgm
+        player.bgm = load_music('slash.mp3')
+        player.bgm.set_volume(15)
+
         if event == z_DOWN:
             player.image = load_image('player_attack.png')
+            player.bgm.play(1)
         elif event == z_UP:
             player.image = load_image('player_idle.png')
         player.frame = 0
@@ -106,10 +113,10 @@ class AttackState:
 
     def do(player):
         player.frameTime += 1
-
         if(player.frameTime == player.frameTimeMax):
             player.frame = (player.frame + 1) % 4
             player.frameTime = 0
+
 
 
 
@@ -142,6 +149,7 @@ class Player:
         self.health = 3
 
         self.image = load_image('player_idle.png')
+
         self.dir = 0
         self.velocity = 0
         self.y_velocity = 0
