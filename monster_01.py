@@ -80,6 +80,8 @@ class Monster_01:
         self.x = random.randint(144, 1132)
         self.y = random.randint(106, 659)
 
+        self.health = 5
+
         self.image = load_image('monster_01.png')
         self.dir = 0
         self.velocity = 0
@@ -120,7 +122,18 @@ class Monster_01:
         return self.x - 20, self.y - 25, self.x + 20, self.y + 30
         return 0, 0, 0, 0
 
-    #def stop(self):
+    def stop(self):
+        self.velocity = 0
+        self.y_velocity = 0
+
+    def knockback(self, x, y):
+        self.x += x
+        self.y += y
+        self.health -= 1
+        if self.health == 0:
+            return True
+        else:
+            return False
 
 
 

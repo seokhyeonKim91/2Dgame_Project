@@ -35,6 +35,7 @@ dir_hero = 0
 class IdleState:
     def enter(player, event):
         global dir_hero
+        player.image = load_image('player_idle.png')
         if event == RIGHT_DOWN:
             player.velocity = 0
             player.velocity += RUN_SPEED_PPS
@@ -93,9 +94,9 @@ class AttackState:
         global dir_hero
         if event == z_DOWN:
             player.image = load_image('player_attack.png')
-            player.image.clip_draw(player.frame * 64, player.dir, 64, 64, player.x, player.y)
         elif event == z_UP:
             player.image = load_image('player_idle.png')
+        player.frame = 0
 
     def draw(player):
         player.image.clip_draw(player.frame * 64, player.dir, 64, 64, player.x, player.y)
@@ -105,14 +106,10 @@ class AttackState:
 
     def do(player):
         player.frameTime += 1
-        if(player.frameTime == player.frameTimeMax):
-            player.frame = (player.frame +1) % 4
-            player.frameTime = 0
-        #if(player.horizon):
-        player.x += player.velocity * game_framework.frame_time * 100
-        #else:
-        player.y += player.y_velocity * game_framework.frame_time * 100
 
+        if(player.frameTime == player.frameTimeMax):
+            player.frame = (player.frame + 1) % 4
+            player.frameTime = 0
 
 
 
@@ -130,9 +127,9 @@ class AttackState:
 
 next_state_table = {
     IdleState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, UP_UP: IdleState, DOWN_UP: IdleState,
-                RIGHT_DOWN: IdleState, LEFT_DOWN: IdleState, UP_DOWN: IdleState, DOWN_DOWN: IdleState, z_UP: AttackState, z_DOWN: AttackState},
+                RIGHT_DOWN: IdleState, LEFT_DOWN: IdleState, UP_DOWN: IdleState, DOWN_DOWN: IdleState, z_UP: IdleState, z_DOWN: AttackState},
     AttackState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, UP_UP: IdleState, DOWN_UP: IdleState,
-                RIGHT_DOWN: IdleState, LEFT_DOWN: IdleState, UP_DOWN: IdleState, DOWN_DOWN: IdleState, z_UP: AttackState, z_DOWN: AttackState}
+                RIGHT_DOWN: IdleState, LEFT_DOWN: IdleState, UP_DOWN: IdleState, DOWN_DOWN: IdleState, z_UP: IdleState, z_DOWN: AttackState}
 }
 
 
@@ -149,7 +146,7 @@ class Player:
         self.horizon = True
         self.frame = 0
         self.frameTime = 0
-        self.frameTimeMax = 2
+        self.frameTimeMax = 80
         self.event_que = []
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
@@ -186,7 +183,12 @@ class Player:
         debug_print('Velocity :' + str(self.velocity) + '  Dir:' + str(self.dir))
         draw_rectangle(*self.get_bb())
 
-
+    def get_state(self):
+        print(self.cur_state)
+        if self.cur_state == IdleState:
+            return 0
+        elif self.cur_state == AttackState:
+            return 1
 
     def handle_event(self, event):
         if (event.type, event.key) in key_event_table:
@@ -201,5 +203,9 @@ class Player:
         self.velocity = 0
         self.y_velocity = 0
 
+
+    def knockback(self, x, y):
+        self.x += x
+        self.y += y
 
 

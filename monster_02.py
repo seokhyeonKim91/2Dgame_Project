@@ -11,7 +11,7 @@ RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 8
-ENEMY_SPEED = 0.15
+ENEMY_SPEED = 0.07
 
 player_location = []
 
@@ -51,13 +51,15 @@ class IdleState:
         else:
             monster02.y += monster02.velocity * game_framework.frame_time * 100
     def draw(monster02):
-        monster02.image.clip_draw(monster02.frame * 64, monster02.dir, 64, 64, monster02.x, monster02.y)
+        monster02.image.clip_draw(monster02.frame * 64, 192, 64, 64, monster02.x, monster02.y)
 
 
 class Monster_02:
     def __init__(self):
         self.x = random.randint(144, 1132)
         self.y = random.randint(106, 659)
+
+        self.health = 3
 
         self.image = load_image('monster_02.png')
         self.dir = 0
@@ -93,6 +95,18 @@ class Monster_02:
 
     def draw(self):
         self.cur_state.draw(self)
+        draw_rectangle(*self.get_bb())
 
+    def get_bb(self):
+        return self.x - 20, self.y - 25, self.x + 20, self.y + 20
+        return 0, 0, 0, 0
 
+    def knockback(self, x, y):
+        self.x += x
+        self.y += y
+        self.health -= 1
+        if self.health == 0:
+            return True
+        else:
+            return False
 

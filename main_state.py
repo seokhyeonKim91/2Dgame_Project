@@ -28,7 +28,6 @@ def enter():
     global monster_01
     global monster_01_01
     global monster_02
-    #global monster_03
     #global Heart
     player = Player()
     map = Map_01()
@@ -41,7 +40,7 @@ def enter():
     game_world.add_object(player, 1)
     game_world.add_object(monster_01, 1)
     game_world.add_object(monster_01_01, 1)
-    #game_world.add_object(Heart, 1)
+    game_world.add_object(monster_02, 1)
     #game_world.add_object(monster_03, 1)
 
 
@@ -71,8 +70,8 @@ def handle_events():
 def update():
     global player
     global monster_01
+    global monster_01_01
     global monster_02
-    global monster_03
     #global Heart
     global player_location
 
@@ -81,18 +80,18 @@ def update():
         if game_object == player:
             player_location = [player.x, player.y]
             print("is player")
-        if game_object == monster_01:
-            monster_01.get_player_location(player_location[0], player_location[1])
-            print("is monster_01")
-        if game_object == monster_02:
-            monster_02.get_player_location(player_location[0], player_location[1])
-            print("is monster_02")
-        #if game_object == monster_03:
-        #    monster_03.get_player_location(player_location[0], player_location[1])
-        #   print("is monster_01")
+        if game_object == monster_01 or game_object == monster_02 or game_object == monster_01_01:
+            game_object.get_player_location(player_location[0], player_location[1])
+            #print("is monster_01")
+            if collide(player, game_object) != [99999, 99999]:
+                # player.stop()
+                if(player.get_state() == 1):
+                    # 플레이어의 상태가 AttackState 일 때 충돌한 적 넉백
+                    if game_object.knockback(collide(player, game_object)[0] * -0.5, collide(player, game_object)[1] * -0.5) :
+                        game_world.remove_object(game_object)
+                else:
+                    player.knockback(collide(player, game_object)[0] * 0.5, collide(player, game_object)[1] * 0.5)
 
-        if collide(player, monster_01):
-            player.stop()
 
 
 
@@ -108,11 +107,19 @@ def draw():
 def collide(a, b):
     left_a, bottom_a, right_a, top_a = a.get_bb()
     left_b, bottom_b, right_b, top_b = b.get_bb()
-    if left_a > right_b: return False
-    if right_a < left_b: return False
-    if top_a < bottom_b: return False
-    if bottom_a > top_b: return False
-    return True
+    return_x = 99999
+    return_y = 99999
+
+    if left_a > right_b: return [return_x, return_y]
+    if right_a < left_b: return [return_x, return_y]
+    if top_a < bottom_b: return [return_x, return_y]
+    if bottom_a > top_b: return [return_x, return_y]
+
+    return_x = left_a - left_b
+    return_y = top_a - top_b
+    return [return_x, return_y]
+
+
 
 
 
