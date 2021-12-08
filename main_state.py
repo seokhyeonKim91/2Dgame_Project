@@ -18,7 +18,7 @@ player = None
 monster_01 = None
 monster_02 = None
 monster_03 = None
-Hearth = None
+health = None
 
 player_location = []
 
@@ -27,20 +27,20 @@ def enter():
     global monster_01
     global monster_01_01
     global monster_02
-    global Hearth
+    global health
     player = Player()
     map = Map_01()
     monster_01 = Monster_01()
     monster_01_01 = Monster_01()
     monster_02 = Monster_02()
-    hearth = Hearth()
+    health = Health()
 
     game_world.add_object(map, 0)
+    game_world.add_object(health, 0)
     game_world.add_object(player, 1)
     game_world.add_object(monster_01, 1)
     game_world.add_object(monster_01_01, 1)
     game_world.add_object(monster_02, 1)
-    game_world.add_object(hearth, 1)
 
 
 
@@ -71,16 +71,17 @@ def update():
     global monster_01
     global monster_01_01
     global monster_02
-    global hearth
+    global health
     global player_location
 
     for game_object in game_world.all_objects():
         game_object.update()
         if game_object == player:
             player_location = [player.x, player.y]
+            health.update_heart(player.get_health())
             print("is player")
             print("x : %f, y : %f" % (player_location[0], player_location[1]))
-        if game_object == monster_01 or game_object == monster_02 or game_object == monster_01_01:
+        elif game_object == monster_01 or game_object == monster_02 or game_object == monster_01_01:
             game_object.get_player_location(player_location[0], player_location[1])
             #print("is monster_01")
             if collide(player, game_object) != [99999, 99999]:
@@ -91,6 +92,7 @@ def update():
                         game_world.remove_object(game_object)
                 else:
                     player.knockback(collide(player, game_object)[0] * 0.5, collide(player, game_object)[1] * 0.5)
+
 
 
 

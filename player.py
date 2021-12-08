@@ -154,6 +154,8 @@ class Player:
         self.cur_state.enter(self, None)
 
 
+    def get_health(self):
+        return self.health
 
     def add_event(self, event):
         self.event_que.insert(0, event)
