@@ -80,6 +80,7 @@ def update():
         if game_object == player:
             player_location = [player.x, player.y]
             print("is player")
+            print("x : %f, y : %f" % (player_location[0], player_location[1]))
         if game_object == monster_01 or game_object == monster_02 or game_object == monster_01_01:
             game_object.get_player_location(player_location[0], player_location[1])
             #print("is monster_01")

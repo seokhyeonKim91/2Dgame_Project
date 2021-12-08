@@ -139,6 +139,8 @@ class Player:
         self.x = 638
         self.y = 131
 
+        self.health = 3
+
         self.image = load_image('player_idle.png')
         self.dir = 0
         self.velocity = 0
@@ -207,5 +209,14 @@ class Player:
     def knockback(self, x, y):
         self.x += x
         self.y += y
+        self.health -= 1
+        if self.health == 0:
+            return True
+        else:
+            return False
 
+class Health_gauge:
+    def __init__(self):
+        self.image = load_image('heart.png')
+        self.image.draw_now(600,600)
 

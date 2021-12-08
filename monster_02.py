@@ -50,8 +50,9 @@ class IdleState:
             monster02.x += monster02.velocity * game_framework.frame_time * 100
         else:
             monster02.y += monster02.velocity * game_framework.frame_time * 100
+            
     def draw(monster02):
-        monster02.image.clip_draw(monster02.frame * 64, 192, 64, 64, monster02.x, monster02.y)
+        monster02.image.clip_draw(monster02.frame * 64, monster02.dir, 64, 64, monster02.x, monster02.y)
 
 
 class Monster_02:
