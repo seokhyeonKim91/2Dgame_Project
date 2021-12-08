@@ -39,24 +39,24 @@ class IdleState:
             player.velocity = 0
             player.velocity += RUN_SPEED_PPS
             player.dir = 0
-            player.dir += 90
             player.horizon = True
         elif event == LEFT_DOWN:
             player.velocity = 0
             player.velocity -= RUN_SPEED_PPS
             player.dir = 0
-            player.dir += 30
+            player.dir += 128
             player.horizon = True
         elif event == UP_DOWN:
             player.y_velocity = 0
             player.y_velocity += RUN_SPEED_PPS
             player.dir = 0
-            player.dir += 60
+            player.dir += 64
             player.horizon = False
         elif event == DOWN_DOWN:
             player.y_velocity = 0
             player.y_velocity -= RUN_SPEED_PPS
             player.dir = 0
+            player.dir += 192
             player.horizon = False
         elif event == z_DOWN:
             pattack(player)
@@ -69,7 +69,7 @@ class IdleState:
         elif event == DOWN_UP:
             player.y_velocity = 0
         elif event == z_UP:
-            player.image = load_image('link_run1.png')
+            player.image = load_image('player_idle.png')
 
 
     def exit(player, event):
@@ -78,7 +78,7 @@ class IdleState:
     def do(player):
         player.frameTime += 1
         if(player.frameTime == player.frameTimeMax):
-            player.frame = (player.frame +1) % 2
+            player.frame = (player.frame +1) % 4
             player.frameTime = 0
         #if(player.horizon):
         player.x += player.velocity * game_framework.frame_time * 100
@@ -89,14 +89,14 @@ class IdleState:
 
     def draw(player):
         #if player.dir == 1:
-        player.image.clip_draw(player.dir, player.frame * 30, 30, 30, player.x, player.y)
+        player.image.clip_draw(player.frame * 64, player.dir, 64, 64, player.x, player.y)
 
 
 
 
 def pattack(player):
-    player.image = load_image('link_attack.png')
-    player.image.clip_draw(player.dir, player.frame * 30, 30, 30, player.x, player.y)
+    player.image = load_image('player_attack.png')
+    player.image.clip_draw(player.frame * 64, player.dir, 64, 64, player.x, player.y)
 
 
 next_state_table = {
@@ -109,10 +109,10 @@ next_state_table = {
 class Player:
 
     def __init__(self):
-        self.x = 192
-        self.y = 60
+        self.x = 638
+        self.y = 131
 
-        self.image = load_image('link_run1.png')
+        self.image = load_image('player_idle.png')
         self.dir = 0
         self.velocity = 0
         self.y_velocity = 0
@@ -140,14 +140,14 @@ class Player:
             self.cur_state.enter(self, event)
 
         # collison check
-        if self.x >= 330:
-            self.x = 329
-        elif self.x <= 60:
-            self.x = 61
-        elif self.y >= 215:
-            self.y = 214
-        elif self.y <= 54:
-            self.y = 55
+        if self.x >= 1133:
+            self.x = 1132
+        elif self.x <= 143:
+            self.x = 144
+        elif self.y >= 660:
+            self.y = 659
+        elif self.y <= 105:
+            self.y = 106
 
 
 

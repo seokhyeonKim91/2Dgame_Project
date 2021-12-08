@@ -6,7 +6,7 @@ class Player:
     def __init__(self):
         self.x, self.y = 192, 60
         self.frame = 0
-        self.image = load_image('link_run1.png')
+        self.image = load_image('player_idle.png')
 
     def update(self):
         self.frame = (self.frame + 1) % 2
@@ -19,7 +19,7 @@ class Player:
             player.x = 51
         elif player.y >= 215:
             player.y = 214
-        elif player.y <= 55:
+        elif player.y <= 0:
             player.y = 54
 
     def draw(self):
@@ -28,7 +28,7 @@ class Player:
 
 class Dungeon01:
     def __init__(self):
-        self.image = load_image('dungeon_1.png')
+        self.image = load_image('dungeon.png')
     def draw(self):
         self.image.draw(resolution_width // 2, resolution_height // 2)
 
@@ -138,13 +138,13 @@ def handle_events():
             elif event.key == SDLK_DOWN:
                 dir_y += 1
             elif event.key == SDLK_z:
-                player.image = load_image('link_run1.png')
+                player.image = load_image('player_idle.png')
 
 
     pass
 
 def pattack():
-    player.image = load_image('link_attack.png')
+    player.image = load_image('player_attack.png')
     player.image.clip_draw(0 + dir_hero, player.frame * 30, 30, 30, player.x, player.y)
 
 def tracking_events1():
