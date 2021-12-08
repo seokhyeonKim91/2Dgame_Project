@@ -58,8 +58,6 @@ class IdleState:
             player.dir = 0
             player.dir += 192
             player.horizon = False
-        elif event == z_DOWN:
-            pattack(player)
         elif event == RIGHT_UP:
             player.velocity = 0
         elif event == LEFT_UP:
@@ -68,8 +66,6 @@ class IdleState:
             player.y_velocity = 0
         elif event == DOWN_UP:
             player.y_velocity = 0
-        elif event == z_UP:
-            player.image = load_image('player_idle.png')
 
 
     def exit(player, event):
@@ -98,11 +94,37 @@ def pattack(player):
     player.image = load_image('player_attack.png')
     player.image.clip_draw(player.frame * 64, player.dir, 64, 64, player.x, player.y)
 
+class AttackState:
+    def enter(player, event):
+        global dir_hero
+        if event == z_DOWN:
+            pattack()
+        elif event == z_UP:
+            player.image = load_image('player_idle.png')
+
+    def pattack(player):
+        player.image = load_image('player_attack.png')
+        player.image.clip_draw(player.frame * 64, player.dir, 64, 64, player.x, player.y)
+
+    #def exit(player, event):
+        pass
+
+    #def do(player):
+    #    player.frameTime += 1
+    #    if(player.frameTime == player.frameTimeMax):
+    #        player.frame = (player.frame +1) % 4
+    #        player.frameTime = 0
+    #    if(player.horizon):
+    #    player.x += player.velocity * game_framework.frame_time * 100
+    #    else:
+    #    player.y += player.y_velocity * game_framework.frame_time * 100
+
+
 
 next_state_table = {
-    IdleState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, RIGHT_DOWN: IdleState, LEFT_DOWN: IdleState}
-#    RunState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, LEFT_DOWN: IdleState, RIGHT_DOWN: IdleState},
-#    SleepState: {LEFT_DOWN: RunState, RIGHT_DOWN: RunState, LEFT_UP: RunState, RIGHT_UP: RunState}
+    IdleState: {z_UP: AttackState, z_DOWN: AttackState},
+    AttackState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, UP_UP: IdleState, DOWN_UP: IdleState,
+                RIGHT_DOWN: IdleState, LEFT_DOWN: IdleState, UP_DOWN: IdleState, DOWN_DOWN: IdleState}
 }
 
 
@@ -136,7 +158,7 @@ class Player:
         if len(self.event_que) > 0:
             event = self.event_que.pop()
             self.cur_state.exit(self, event)
-            #self.cur_state = next_state_table[self.cur_state][event]
+            self.cur_state = next_state_table[self.cur_state][event]
             self.cur_state.enter(self, event)
 
         # collison check
