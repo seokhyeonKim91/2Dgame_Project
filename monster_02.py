@@ -45,20 +45,19 @@ class IdleState:
     def do(monster02):
         monster02.frameTime += 1
         if(monster02.frameTime == monster02.frameTimeMax):
-            monster02.frame = (monster02.frame +1) % 2
-            monster02.frameTime = 0
+            monster02.frame = (monster02.frame +1) % 4
         if(monster02.horizon):
             monster02.x += monster02.velocity * game_framework.frame_time * 100
         else:
             monster02.y += monster02.velocity * game_framework.frame_time * 100
     def draw(monster02):
-        monster02.image.clip_draw(monster02.dir, monster02.frame * 30, 30, 30, monster02.x, monster02.y)
+        monster02.image.clip_draw(monster02.frame * 64, monster02.dir, 64, 64, monster02.x, monster02.y)
 
 
 class Monster_02:
     def __init__(self):
-        self.x = random.randint(61, 329)
-        self.y = random.randint(54, 214)
+        self.x = random.randint(144, 1132)
+        self.y = random.randint(106, 659)
 
         self.image = load_image('monster_02.png')
         self.dir = 0
