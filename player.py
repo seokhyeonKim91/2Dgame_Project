@@ -98,7 +98,8 @@ class AttackState:
     def enter(player, event):
         global dir_hero
         if event == z_DOWN:
-            pattack()
+            player.image = load_image('player_attack.png')
+            player.image.clip_draw(player.frame * 64, player.dir, 64, 64, player.x, player.y)
         elif event == z_UP:
             player.image = load_image('player_idle.png')
 
@@ -106,8 +107,7 @@ class AttackState:
         player.image = load_image('player_attack.png')
         player.image.clip_draw(player.frame * 64, player.dir, 64, 64, player.x, player.y)
 
-    #def exit(player, event):
-        pass
+
 
     #def do(player):
     #    player.frameTime += 1
@@ -122,9 +122,10 @@ class AttackState:
 
 
 next_state_table = {
-    IdleState: {z_UP: AttackState, z_DOWN: AttackState},
+    IdleState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, UP_UP: IdleState, DOWN_UP: IdleState,
+                RIGHT_DOWN: IdleState, LEFT_DOWN: IdleState, UP_DOWN: IdleState, DOWN_DOWN: IdleState, z_UP: AttackState, z_DOWN: AttackState},
     AttackState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, UP_UP: IdleState, DOWN_UP: IdleState,
-                RIGHT_DOWN: IdleState, LEFT_DOWN: IdleState, UP_DOWN: IdleState, DOWN_DOWN: IdleState}
+                RIGHT_DOWN: IdleState, LEFT_DOWN: IdleState, UP_DOWN: IdleState, DOWN_DOWN: IdleState, z_UP: AttackState, z_DOWN: AttackState}
 }
 
 
@@ -192,4 +193,6 @@ class Player:
     def stop(self):
         self.velocity = 0
         self.y_velocity = 0
+
+
 
