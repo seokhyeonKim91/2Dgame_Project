@@ -5,6 +5,7 @@ import os
 from pico2d import *
 import game_framework
 import game_world
+import gameover_state
 
 from player import Player
 from map_01 import Map_01
@@ -92,6 +93,9 @@ def update():
                         game_world.remove_object(game_object)
                 else:
                     player.knockback(collide(player, game_object)[0] * 0.5, collide(player, game_object)[1] * 0.5)
+                    if player.get_health() == 0:
+                        game_framework.change_state(gameover_state)
+
 
 
 

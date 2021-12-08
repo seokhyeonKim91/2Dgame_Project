@@ -2,13 +2,13 @@ import game_framework
 from pico2d import *
 resolution_width, resolution_height = 1280, 720
 
-name = "GameoverState"
+name = "VictoryState"
 image = None
 logo_time = 0.0
 
 def enter():
     global image
-    image = load_image('gameover.png')
+    image = load_image('victory.png')
 
 
 def exit():
