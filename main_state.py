@@ -8,6 +8,7 @@ import game_world
 import gameover_state
 import victory_state
 
+
 from player import Player
 from map_01 import Map_01
 from monster_01 import Monster_01
@@ -21,6 +22,7 @@ monster_01 = None
 monster_02 = None
 monster_03 = None
 health = None
+bgm = None
 monster_counter = 0
 
 player_location = []
@@ -31,12 +33,17 @@ def enter():
     global monster_01_01
     global monster_02
     global health
+    global bgm
     player = Player()
     map = Map_01()
     monster_01 = Monster_01()
     monster_01_01 = Monster_01()
     monster_02 = Monster_02()
     health = Health()
+
+    bgm = load_music('01 Beyond the Gates.mp3')
+    bgm.set_volume(30)
+    bgm.repeat_play()
 
     game_world.add_object(map, 0)
     game_world.add_object(health, 0)
@@ -77,6 +84,8 @@ def update():
     global health
     global player_location
     global monster_counter
+    global bgm
+
 
     for game_object in game_world.all_objects():
         game_object.update()
@@ -96,12 +105,15 @@ def update():
                         game_world.remove_object(game_object)
                         monster_counter += 1
                         if monster_counter == 3 :
+                            bgm.stop()
                             game_framework.change_state(victory_state)
 
                 else:
                     player.knockback(collide(player, game_object)[0] * 0.5, collide(player, game_object)[1] * 0.5)
                     if player.get_health() == 0:
+                        bgm.stop()
                         game_framework.change_state(gameover_state)
+
 
 
 

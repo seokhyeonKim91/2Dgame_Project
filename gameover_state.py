@@ -4,16 +4,22 @@ resolution_width, resolution_height = 1280, 720
 
 name = "GameoverState"
 image = None
+bgm = None
 logo_time = 0.0
 
 def enter():
     global image
+    global bgm
+    bgm = load_music('22 The Void.mp3')
+    bgm.set_volume(30)
+    bgm.repeat_play()
     image = load_image('gameover.png')
 
 
 def exit():
     global image
     delay(3)
+    bgm.stop()
     del (image)
 
 
