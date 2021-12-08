@@ -22,16 +22,36 @@ def tracking_events1(monster):
     if player_location.__len__() > 0:
         if player_location[0] >= monster.x:
             monster.x += ENEMY_SPEED
-            if player_location[1] >= monster.y:
+            monster.dir = 0
+            if player_location[1] > monster.y:
                 monster.y += ENEMY_SPEED
+                monster.dir = 0
+                monster.dir += 64
             elif player_location[1] < monster.y:
                 monster.y -= ENEMY_SPEED
+                monster.dir = 0
+                monster.dir += 192
         elif player_location[0] < monster.x:
             monster.x -= ENEMY_SPEED
-            if player_location[1] >= monster.y:
+            monster.dir = 0
+            monster.dir += 128
+            if player_location[1] > monster.y:
                 monster.y += ENEMY_SPEED
+                monster.dir = 0
+                monster.dir += 64
             elif player_location[1] < monster.y:
                 monster.y -= ENEMY_SPEED
+                monster.dir = 0
+                monster.dir += 192
+        #elif player_location[1] == monster.y:
+        #    if player_location[0] > monster.x:
+        #        monster.dir = 0
+        #        monster.dir += 192
+        #    elif player_location[0] < monster.x:
+        #        monster.dir = 0
+        #        monster.dir += 64
+
+
     else:
         print("player_location is not has info")
 

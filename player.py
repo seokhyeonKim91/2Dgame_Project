@@ -82,17 +82,11 @@ class IdleState:
         player.y += player.y_velocity * game_framework.frame_time * 100
 
 
-
     def draw(player):
         #if player.dir == 1:
         player.image.clip_draw(player.frame * 64, player.dir, 64, 64, player.x, player.y)
 
 
-
-
-def pattack(player):
-    player.image = load_image('player_attack.png')
-    player.image.clip_draw(player.frame * 64, player.dir, 64, 64, player.x, player.y)
 
 class AttackState:
     def enter(player, event):
@@ -103,9 +97,22 @@ class AttackState:
         elif event == z_UP:
             player.image = load_image('player_idle.png')
 
-    def pattack(player):
-        player.image = load_image('player_attack.png')
+    def draw(player):
         player.image.clip_draw(player.frame * 64, player.dir, 64, 64, player.x, player.y)
+
+    def exit(player, event):
+        pass
+
+    def do(player):
+        player.frameTime += 1
+        if(player.frameTime == player.frameTimeMax):
+            player.frame = (player.frame +1) % 4
+            player.frameTime = 0
+        #if(player.horizon):
+        player.x += player.velocity * game_framework.frame_time * 100
+        #else:
+        player.y += player.y_velocity * game_framework.frame_time * 100
+
 
 
 
